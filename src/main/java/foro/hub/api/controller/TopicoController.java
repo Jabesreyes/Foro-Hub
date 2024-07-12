@@ -1,15 +1,17 @@
 package foro.hub.api.controller;
 
+import foro.hub.api.topico.DatosListadoTopicos;
 import foro.hub.api.topico.DatosRegistroTopico;
 import foro.hub.api.topico.Topico;
 import foro.hub.api.topico.TopicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+
 
 @RestController
 @RequestMapping("/topicos")
@@ -30,5 +32,10 @@ public class TopicoController {
         }else{
             System.out.println("Ya existe un Topico con el mismo titulo o mensaje, no se puede guardar.");
         }
+    }
+
+    @GetMapping
+    public Page<DatosListadoTopicos> listadoTopicos(@PageableDefault(size=10) Pageable paginacion){
+        return topicoRepository.findAll(paginacion).map(DatosListadoTopicos::new);
     }
 }

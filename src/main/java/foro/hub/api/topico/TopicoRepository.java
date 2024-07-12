@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface TopicoRepository extends JpaRepository<Topico, Long> {
     List<Topico> findByTituloOrMensaje(String titulo, String mensaje);
+
 }
