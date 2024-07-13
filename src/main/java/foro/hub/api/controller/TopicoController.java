@@ -8,7 +8,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.Optional;
 
 
@@ -20,22 +22,21 @@ public class TopicoController {
     private TopicoRepository topicoRepository;
 
     @PostMapping
-    public void registrarTopico(@RequestBody DatosRegistroTopico datosRegistroTopico){
-        System.out.println("llego correctamente");
-        System.out.println(datosRegistroTopico);
-
-        // Buscar si ya existe un Topico con el mismo titulo o mensaje
+    public ResponseEntity registrarTopico(@RequestBody DatosRegistroTopico datosRegistroTopico, UriComponentsBuilder uriComponentsBuilder){
         if (topicoRepository.findByTituloOrMensaje(datosRegistroTopico.titulo(), datosRegistroTopico.mensaje()).isEmpty()){
-            topicoRepository.save(new Topico(datosRegistroTopico));
-            System.out.println("Topico registrado exitosamente");
+            Topico topico = topicoRepository.save(new Topico(datosRegistroTopico));
+            URI url = uriComponentsBuilder.path("/topicos/{id}").buildAndExpand(topico.getId()).toUri();
+            return ResponseEntity.created(url).body(topico);
+
         }else{
             System.out.println("Ya existe un Topico con el mismo titulo o mensaje, no se puede guardar.");
         }
+        return null;
     }
 
     @GetMapping
-    public Page<DatosListadoTopicos> listadoTopicos(@PageableDefault(size=10, sort = "fecha", direction = Sort.Direction.ASC) Pageable paginacion){
-        return topicoRepository.findAll(paginacion).map(DatosListadoTopicos::new);
+    public ResponseEntity<Page<DatosListadoTopicos>> listadoTopicos(@PageableDefault(size=10, sort = "fecha", direction = Sort.Direction.ASC) Pageable paginacion){
+        return ResponseEntity.ok(topicoRepository.findAll(paginacion).map(DatosListadoTopicos::new));
     }
 
     @GetMapping("/{id}")
@@ -68,10 +69,10 @@ public class TopicoController {
             topico.setAutor(datosActualizacionTopico.autor());
             topico.setCurso(datosActualizacionTopico.curso());
             topicoRepository.save(topico);
+            return ResponseEntity.ok(new DatosDetallesTopico(topico.getId(), topico.getTitulo(), topico.getMensaje(), topico.getFecha(), topico.getStatus(), topico.getAutor(), topico.getCurso()));
         } else {
             return ResponseEntity.notFound().build();
         }
-        return null;
     }
 
     @DeleteMapping("/{id}")
