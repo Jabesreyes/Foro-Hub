@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
-public record DatosRegistroTopico(
+public record DatosActualizacionTopico(
         @NotBlank
         String titulo,
         @NotBlank
@@ -19,4 +19,5 @@ public record DatosRegistroTopico(
         @NotBlank
         String curso
 ) {
+
 }
