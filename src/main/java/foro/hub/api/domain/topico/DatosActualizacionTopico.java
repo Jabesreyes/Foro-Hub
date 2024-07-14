@@ -1,11 +1,11 @@
-package foro.hub.api.topico;
+package foro.hub.api.domain.topico;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
-public record DatosRegistroTopico(
+public record DatosActualizacionTopico(
         @NotBlank
         String titulo,
         @NotBlank
@@ -19,4 +19,5 @@ public record DatosRegistroTopico(
         @NotBlank
         String curso
 ) {
+
 }

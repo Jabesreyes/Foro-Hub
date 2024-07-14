@@ -1,4 +1,4 @@
-package foro.hub.api.topico;
+package foro.hub.api.domain.topico;
 
 public enum Status {
     ABIERTO,

@@ -1,4 +1,4 @@
-package foro.hub.api.usuarios;
+package foro.hub.api.domain.usuarios;
 
 import jakarta.persistence.*;
 import lombok.*;

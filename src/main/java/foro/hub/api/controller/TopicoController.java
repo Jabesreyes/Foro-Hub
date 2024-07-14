@@ -1,6 +1,6 @@
 package foro.hub.api.controller;
 
-import foro.hub.api.topico.*;
+import foro.hub.api.domain.topico.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
